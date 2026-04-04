@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Monitor | Industrial SaaS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://unpkg.com/three@0.145.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.145.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://unpkg.com/three@0.145.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://unpkg.com/three@0.145.0/examples/js/loaders/DRACOLoader.js"></script>
+    <link rel="stylesheet" href="industrial-v14.css">
+</head>
+<body>
+    
+    <!-- Left Side Panel (structural |) -->
+    <aside class="side-track left-track">
+        <div class="track-icons">
+            <i class="ph ph-chat-circle-dots"></i>
+            <i class="ph ph-phone"></i>
+            <i class="ph ph-map-pin"></i>
+        </div>
+    </aside>
+
+    <!-- Right Side Panel (structural |) -->
+    <aside class="side-track right-track">
+        <div class="track-icons">
+            <i class="ph ph-facebook-logo"></i>
+            <i class="ph ph-youtube-logo"></i>
+            <i class="ph ph-instagram-logo"></i>
+        </div>
+    </aside>
+    
+    <!-- Top Navigation -->
+    <header class="top-bar">
+        <div class="top-left">
+            <span class="company">Pulse.AI</span>
+            <span class="active-link">Equipment</span>
+            <span>Services</span>
+            <span>Intelligence</span>
+            <span>Fleet</span>
+        </div>
+        <div class="top-right">
+            <button class="btn-outline">Order Machine</button>
+            <div class="lang" style="font-weight: 600; cursor: pointer; border: 1px solid #e5e7eb; padding: 0.4rem 0.8rem; border-radius: 6px;">EN</div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="center-area">
+        
+        <!-- Hero Showcase -->
+        <section class="hero-section">
+            <div class="hero-text">
+                <h1 id="main-title">Shot blasting machine</h1>
+                <p>Advanced surface preparation technology for industrial-grade metal cleaning. Precision-engineered for high-durability coating applications.</p>
+                <div class="hero-stats" style="display: flex; gap: 2rem; margin-top: 2rem;">
+                    <div class="stat-item">
+                        <span style="display: block; font-size: 0.85rem; color: #64748b; font-weight: 600;">Status</span>
+                        <span style="font-weight: 700; color: #22c55e;">Operational</span>
+                    </div>
+                    <div class="stat-item">
+                        <span style="display: block; font-size: 0.85rem; color: #64748b; font-weight: 600;">Model</span>
+                        <span style="font-weight: 700;">SB-2000X</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-image" id="hero-image-container">
+                <div id="three-container">
+                    <div id="loading-overlay">
+                        <div class="loader"></div>
+                        <span id="loading-text" style="font-weight: 600; color: #0f172a;">Calibrating System... 0%</span>
+                    </div>
+                    <!-- Fallback image hidden by default -->
+                    <img id="fallback-machine-image" src="machine.png" alt="Machine Fallback" style="display: none; max-width: 90%; max-height: 90%; object-fit: contain;">
+                </div>
+            </div>
+        </section>
+
+        <!-- Details and Parameters -->
+        <div class="details-grid">
+            
+            <!-- Cards Column 1: Types -->
+            <div class="card-section">
+                <h3 class="section-title"><i class="ph-bold ph-cube"></i> Machine Configuration</h3>
+                <div class="types-section">
+                    <div class="cards-grid">
+                        <div class="equipment-card active">
+                            <div class="card-top">
+                                <h4>Painting & Drying</h4>
+                                <div class="workspace">Workspace: <strong>2-10 m²</strong></div>
+                            </div>
+                            <i class="ph ph-caret-right" style="color: #cbd5e1;"></i>
+                        </div>
+                        <div class="equipment-card">
+                            <div class="card-top">
+                                <h4>Open Painting Area</h4>
+                                <div class="workspace">Workspace: <strong>5-15 m²</strong></div>
+                            </div>
+                            <i class="ph ph-caret-right" style="color: #cbd5e1;"></i>
+                        </div>
+                        <div class="equipment-card">
+                            <div class="card-top">
+                                <h4>Crusher Walk-through</h4>
+                                <div class="workspace">Workspace: <strong>10-30 m²</strong></div>
+                            </div>
+                            <i class="ph ph-caret-right" style="color: #cbd5e1;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards Column 2: Parameters -->
+            <div class="card-section">
+                <h3 class="section-title"><i class="ph-bold ph-sliders"></i> Operating Parameters</h3>
+                <div class="params-section">
+                    <div class="control-panel">
+                        <div class="input-group">
+                            <label>Temperature (&deg;C)</label>
+                            <span class="val-display" id="temp-val">45</span>
+                            <input type="range" id="temp-input" min="0" max="150" value="45">
+                        </div>
+                        <div class="input-group">
+                            <label>Humidity (%)</label>
+                            <span class="val-display" id="humidity-val">30</span>
+                            <input type="range" id="humidity-input" min="0" max="100" value="30">
+                        </div>
+                        <div class="input-group">
+                            <label>Air Flow (cfm)</label>
+                            <span class="val-display" id="airflow-val">500</span>
+                            <input type="range" id="airflow-input" min="100" max="1000" value="500">
+                        </div>
+                    </div>
+                    
+                    <div class="ai-suggestion hidden" id="ai-suggestion-box">
+                        <div class="suggestion-header">
+                            <i class="ph-fill ph-warning-circle"></i>
+                        </div>
+                        <div class="suggestion-body">
+                            <h4 style="margin-bottom: 0.25rem;">Predictive Analytics Alert</h4>
+                            <p id="suggestion-text">Threshold exceeded. Maintenance advised.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Sticky Bottom Selector -->
+    <footer class="bottom-bar" id="device-scroll">
+        <!-- Javascript will populate these devices -->
+    </footer>
+
+    <script src="app.js?v=14"></script>
+    <script src="three-app.js?v=14"></script>
+</body>
+</html>
