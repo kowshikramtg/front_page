@@ -1,11 +1,11 @@
 :root {
-    --bg-main: #f8fafc;
-    --bg-card: #ffffff;
-    --border-color: #d0d0d0;
+    --bg-main: #FFB5C0;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --border-color: rgba(0, 0, 0, 0.1);
     --text-primary: #0f172a;
-    --text-secondary: #64748b;
-    --accent: #f97316;
-    --accent-glow: rgba(249, 115, 22, 0.2);
+    --text-secondary: #475569;
+    --accent: #000000;
+    --accent-glow: rgba(0, 0, 0, 0.1);
     --header-height: 80px;
     --footer-height: 140px;
     --side-track-width: 80px;
@@ -21,10 +21,8 @@
 
 body {
     background-color: var(--bg-main);
-    background-image:
-        linear-gradient(to right, rgba(203, 213, 225, 0.1) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(203, 213, 225, 0.1) 1px, transparent 1px);
-    background-size: 80px 80px;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.15) 1.5px, transparent 0);
+    background-size: 24px 24px;
     color: var(--text-primary);
     min-height: 100vh;
     display: flex;
@@ -46,17 +44,14 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 100;
-    /* Above center pane lines */
 }
 
 .left-track {
     left: 0;
-    border-right: 1px solid var(--border-color);
 }
 
 .right-track {
     right: 0;
-    border-left: 1px solid var(--border-color);
 }
 
 .track-icons {
@@ -74,8 +69,8 @@ body {
 }
 
 .track-icons i:hover {
-    color: var(--accent);
-    background: rgba(249, 115, 22, 0.05);
+    color: var(--text-primary);
+    background: rgba(0, 0, 0, 0.05);
     border-radius: 8px;
 }
 
@@ -105,7 +100,7 @@ body {
 /* TOP BAR */
 .top-bar {
     height: var(--header-height);
-    background: rgba(255, 255, 255, 0.95);
+    background: transparent;
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -195,7 +190,7 @@ main.center-area {
     left: 0;
     right: 0;
     height: var(--footer-height);
-    background: white;
+    background: transparent;
     border-top: 1px solid var(--border-color);
     display: flex;
     align-items: stretch;
@@ -314,4 +309,59 @@ main.center-area {
     align-items: center;
     justify-content: center;
     z-index: 10;
+}
+
+@keyframes staggeredFade {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+    animation: staggeredFade 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* SPACE WARP TRANSITION */
+#space-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-main);
+    background-image: radial-gradient(rgba(0, 0, 0, 0.15) 1.5px, transparent 0);
+    background-size: 24px 24px;
+    z-index: 9999;
+    display: none;
+    opacity: 1;
+    transition: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes dashZoomIn {
+    0% { transform: scale(0.05); opacity: 0; filter: blur(30px) brightness(2); }
+    15% { opacity: 1; }
+    100% { transform: scale(1); opacity: 1; filter: blur(0) brightness(1); }
+}
+
+.speed-zoom-in {
+    animation: dashZoomIn 1.2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    transform-origin: center center;
+}
+
+.warp-text {
+    color: #0f172a;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    margin-top: 2rem;
+    opacity: 0.8;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
 }

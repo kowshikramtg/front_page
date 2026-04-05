@@ -139,4 +139,87 @@
     // Initial Load - default model
     window.loadMachineModel('model-optimized.glb');
 
+    // PRELOADER CACHE
+    const modelCache = {};
+    window.preloadMachineModel = function(path) {
+        if (modelCache[path]) return;
+        gltfLoader.load(path, (gltf) => { modelCache[path] = gltf.scene; });
+    };
+    
+    // Preload motor immediately
+    window.preloadMachineModel('motor.glb');
+
+    // CINEMATIC SPACE WARP
+    window.triggerSpaceWarp = function(modelPath, onComplete) {
+        const overlay = document.getElementById('space-overlay');
+        if (!overlay) return;
+        
+        // Show solid black immediately
+        overlay.style.display = 'flex';
+        overlay.innerHTML = '<div class="warp-text" id="warp-loader">Initializing Jump Drive...</div>';
+        
+        const startAnimation = (model) => {
+            const loaderText = document.getElementById('warp-loader');
+            if (loaderText) loaderText.innerText = 'Engaging Warp...';
+            
+            // Setup scene
+            const tScene = new THREE.Scene();
+            const tCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
+            const tRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            tRenderer.setSize(window.innerWidth, window.innerHeight);
+            overlay.appendChild(tRenderer.domElement);
+            
+            tScene.add(new THREE.AmbientLight(0xffffff, 1.2));
+            const pLight = new THREE.PointLight(0xffffff, 2);
+            pLight.position.set(10, 10, 10);
+            tScene.add(pLight);
+
+            tScene.add(model);
+            
+            // Start LARGE (fill screen)
+            const box = new THREE.Box3().setFromObject(model);
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            tCamera.position.z = maxDim * 1.2; 
+            
+            let scale = 1.0;
+            let velocity = 0.003;
+            let zVelocity = 0.05;
+            
+            function animateWarp() {
+                if (scale <= 0.005) {
+                    // Cleanup
+                    tRenderer.dispose();
+                    overlay.style.display = 'none';
+                    if (onComplete) onComplete();
+                    return;
+                }
+                
+                requestAnimationFrame(animateWarp);
+                
+                // Gentler acceleration (slower jump)
+                scale -= velocity;
+                tCamera.position.z += zVelocity;
+                velocity *= 1.08; 
+                zVelocity *= 1.12;
+                
+                model.scale.set(Math.max(scale, 0), Math.max(scale, 0), Math.max(scale, 0));
+                model.rotation.y += 0.15; // Slower spin
+                model.rotation.z += 0.05;
+                
+                tRenderer.render(tScene, tCamera);
+            }
+            animateWarp();
+        };
+
+        // Check cache first
+        if (modelCache[modelPath]) {
+            startAnimation(modelCache[modelPath].clone());
+        } else {
+            gltfLoader.load(modelPath, (gltf) => {
+                startAnimation(gltf.scene);
+            });
+        }
+    };
+
 })();

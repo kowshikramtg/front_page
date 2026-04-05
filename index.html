@@ -172,7 +172,7 @@
 
     <!-- Main Content Area -->
     <main class="center-area">
-        <div id="default-dashboard">
+        <div id="default-dashboard" class="animate-in">
             <!-- Hero Showcase -->
             <section class="hero-section">
                 <div class="hero-text">
@@ -278,7 +278,7 @@
         </div> <!-- End of default-dashboard -->
 
         <!-- Motor Dashboard Custom View -->
-        <div id="motor-dashboard" style="display: none; padding-bottom: 4rem;">
+        <div id="motor-dashboard" class="animate-in" style="display: none; padding-bottom: 4rem;">
 
             <div class="motor-header"
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
@@ -891,9 +891,12 @@
     </main>
 
     <!-- Sticky Bottom Selector -->
-    <footer class="bottom-bar" id="device-scroll">
+    <footer class="bottom-bar animate-in" id="device-scroll" style="animation-delay: 0.4s;">
         <!-- Javascript will populate these devices -->
     </footer>
+
+    <!-- Space Transition Overlay -->
+    <div id="space-overlay"></div>
 
     <!-- Drift Modal -->
     <div id="drift-modal"

@@ -576,8 +576,25 @@ function selectDevice(id) {
     
     if (id === 5) {
         if (defaultDashboard) defaultDashboard.style.display = 'none';
-        if (motorDashboard) motorDashboard.style.display = 'block';
-        resetMotorGraphs();
+        
+        // TRIGGER SPACE WARP
+        if (window.triggerSpaceWarp) {
+            // Hide motor dashboard initially to allow warp to finish
+            if (motorDashboard) motorDashboard.style.display = 'none';
+            
+            window.triggerSpaceWarp('motor.glb', () => {
+                if (motorDashboard) {
+                    motorDashboard.style.display = 'block';
+                    motorDashboard.classList.add('speed-zoom-in');
+                    setTimeout(() => motorDashboard.classList.remove('speed-zoom-in'), 800);
+                }
+                resetMotorGraphs();
+            });
+        } else {
+            // Fallback if three-app.js not loaded properly
+            if (motorDashboard) motorDashboard.style.display = 'block';
+            resetMotorGraphs();
+        }
         
         // Reset results on revisit
         const leftRes = document.getElementById('motor-results-left');
