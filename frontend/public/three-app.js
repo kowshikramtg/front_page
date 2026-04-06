@@ -7,7 +7,7 @@
 
     // Scene setup
     const scene = new THREE.Scene();
-    scene.background = null; 
+    scene.background = null;
 
     // Camera
     const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
@@ -54,6 +54,9 @@
 
     const gltfLoader = new THREE.GLTFLoader(loadingManager);
     gltfLoader.setDRACOLoader(dracoLoader);
+    if (typeof MeshoptDecoder !== 'undefined') {
+        gltfLoader.setMeshoptDecoder(MeshoptDecoder);
+    }
 
     // Global function to switch models
     window.loadMachineModel = (modelPath) => {
@@ -89,7 +92,7 @@
                 const maxDim = Math.max(size.x, size.y, size.z);
                 const fov = camera.fov * (Math.PI / 180);
                 let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
-                
+
                 // Adjust framing based on model
                 let multiplier = 0.8;
                 if (modelPath.includes('engine')) multiplier = 1.0;
@@ -131,88 +134,97 @@
     // Animation Loop
     function animate() {
         requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
+        if (typeof controls !== 'undefined') controls.update();
+        if (typeof renderer !== 'undefined' && typeof scene !== 'undefined' && typeof camera !== 'undefined') {
+            renderer.render(scene, camera);
+        }
     }
     animate();
 
-    // Initial Load - default model
-    window.loadMachineModel('model-optimized.glb');
-
     // PRELOADER CACHE
     const modelCache = {};
-    window.preloadMachineModel = function(path) {
+    // gltfLoader and dracoLoader are already declared in the outer scope
+
+    window.preloadMachineModel = function (path) {
         if (modelCache[path]) return;
-        gltfLoader.load(path, (gltf) => { modelCache[path] = gltf.scene; });
+        gltfLoader.load(path, (gltf) => {
+            const model = gltf.scene;
+            const box = new THREE.Box3().setFromObject(model);
+            const center = box.getCenter(new THREE.Vector3());
+            model.position.x -= center.x;
+            model.position.y -= center.y;
+            model.position.z -= center.z;
+            modelCache[path] = model;
+        });
     };
-    
-    // Preload motor immediately
-    window.preloadMachineModel('motor.glb');
+
+    ['model-optimized.glb', 'engine.glb', 'battery-optimized.glb', 'motor.glb'].forEach(p => {
+        window.preloadMachineModel(p);
+    });
 
     // CINEMATIC SPACE WARP
-    window.triggerSpaceWarp = function(modelPath, onComplete) {
+    window.triggerSpaceWarp = function (modelPath, onComplete) {
         const overlay = document.getElementById('space-overlay');
         if (!overlay) return;
-        
-        // Show solid black immediately
+
         overlay.style.display = 'flex';
-        overlay.innerHTML = '<div class="warp-text" id="warp-loader">Initializing Jump Drive...</div>';
-        
+        overlay.style.backgroundColor = 'rgba(250, 250, 249, 1)'; // Solid ivory background for the "warp tunnel"
+        overlay.style.opacity = '1';
+        overlay.innerHTML = '<div class="warp-text" id="warp-loader" style="position: absolute; bottom: 10%; width: 100%; text-align: center; font-weight: 800; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase;">Initializing Neural Link...</div>';
+
         const startAnimation = (model) => {
-            const loaderText = document.getElementById('warp-loader');
-            if (loaderText) loaderText.innerText = 'Engaging Warp...';
-            
-            // Setup scene
             const tScene = new THREE.Scene();
             const tCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
             const tRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             tRenderer.setSize(window.innerWidth, window.innerHeight);
             overlay.appendChild(tRenderer.domElement);
-            
-            tScene.add(new THREE.AmbientLight(0xffffff, 1.2));
+
+            tScene.add(new THREE.AmbientLight(0xffffff, 1.5));
             const pLight = new THREE.PointLight(0xffffff, 2);
             pLight.position.set(10, 10, 10);
             tScene.add(pLight);
 
             tScene.add(model);
-            
-            // Start LARGE (fill screen)
+
             const box = new THREE.Box3().setFromObject(model);
             const size = box.getSize(new THREE.Vector3());
             const maxDim = Math.max(size.x, size.y, size.z);
-            tCamera.position.z = maxDim * 1.2; 
-            
+
+            // Frame model to cover ~70% of the space initially
+            tCamera.position.z = maxDim * 1.5;
+
             let scale = 1.0;
-            let velocity = 0.003;
-            let zVelocity = 0.05;
-            
+            let velocity = 0.005; // Slightly faster initial zoom since we start further out
+            let zVelocity = 0.1;
+
             function animateWarp() {
-                if (scale <= 0.005) {
-                    // Cleanup
+                if (scale <= 0.001) {
                     tRenderer.dispose();
-                    overlay.style.display = 'none';
-                    if (onComplete) onComplete();
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        overlay.innerHTML = '';
+                        if (onComplete) onComplete();
+                    }, 300);
                     return;
                 }
-                
+
                 requestAnimationFrame(animateWarp);
-                
-                // Gentler acceleration (slower jump)
+
                 scale -= velocity;
                 tCamera.position.z += zVelocity;
-                velocity *= 1.08; 
-                zVelocity *= 1.12;
-                
+                velocity *= 1.08;
+                zVelocity *= 1.15;
+
                 model.scale.set(Math.max(scale, 0), Math.max(scale, 0), Math.max(scale, 0));
-                model.rotation.y += 0.15; // Slower spin
+                model.rotation.y += 0.15;
                 model.rotation.z += 0.05;
-                
+
                 tRenderer.render(tScene, tCamera);
             }
             animateWarp();
         };
 
-        // Check cache first
         if (modelCache[modelPath]) {
             startAnimation(modelCache[modelPath].clone());
         } else {
@@ -221,5 +233,4 @@
             });
         }
     };
-
 })();

@@ -4,9 +4,10 @@ import Link from "next/link";
 import styles from "./landing.module.css";
 import Script from "next/script";
 import Landing3D from "./Landing3D";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function LandingPage() {
+  const [hasMounted, setHasMounted] = useState(false);
   const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,6 +23,8 @@ export default function LandingPage() {
 
     // Toggle body class for conditional padding (no footer gap on landing)
     document.body.classList.add("landing-page");
+
+    setHasMounted(true);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
@@ -42,7 +45,7 @@ export default function LandingPage() {
 
         {/* Continuous Active Data Streams */}
         <div className={styles.dataLayer}>
-          {[...Array(20)].map((_, i) => (
+          {hasMounted && [...Array(20)].map((_, i) => (
             <div
               key={i}
               className={styles.dataLine}
