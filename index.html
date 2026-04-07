@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equipment Monitor | Industrial SaaS</title>
+    <title>Industrial SaaS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
@@ -93,8 +93,13 @@
             font-size: 1.1rem;
         }
 
-        .action-menu-item.download { color: #16a34a; }
-        .action-menu-item.share { color: #0ea5e9; }
+        .action-menu-item.download {
+            color: #16a34a;
+        }
+
+        .action-menu-item.share {
+            color: #0ea5e9;
+        }
     </style>
 </head>
 
@@ -121,12 +126,12 @@
     <!-- Top Navigation -->
     <header class="top-bar">
         <div class="top-left">
-            <span class="company" style="color: var(--accent); font-weight: 800; font-size: 1.3rem;">Pulse.AI</span>
+            <span class="company" style="color: var(--accent); font-weight: 800; font-size: 1.3rem;">SPredict</span>
 
-            <span class="active-link">Equipment</span>
+            <!-- <span class="active-link">Equipment</span>
             <span>Services</span>
             <span>Intelligence</span>
-            <span>Fleet</span>
+            <span>Fleet</span> -->
         </div>
         <div class="top-right"
             style="display: flex; gap: 2rem; align-items: center; font-weight: 600; font-size: 0.95rem; color: var(--text-secondary);">
@@ -172,7 +177,7 @@
             <div style="width: 1px; height: 24px; background: var(--border-color); margin: 0 0.5rem;"></div>
             <i class="ph-bold ph-user"
                 style="font-size: 1.4rem; cursor: pointer; color: var(--text-secondary); transition: color 0.2s;"></i>
-            <button id="btn-auth-toggle" class="btn-pill">Login</button>
+            <button id="btn-auth-toggle" class="btn-pill pill-login">Login</button>
 
 
         </div>
@@ -196,7 +201,8 @@
                         </div>
                         <div class="stat-item">
                             <span
-                                style="display: block; font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.4rem;">Model version</span>
+                                style="display: block; font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.4rem;">Model
+                                version</span>
                             <span style="font-weight: 700; color: var(--text-primary);">SB-2000X / v1.4</span>
                         </div>
                     </div>
@@ -207,7 +213,9 @@
                     <div id="three-container">
                         <div id="loading-overlay" style="background: rgba(250, 250, 249, 0.9);">
                             <div class="loader" style="border-top-color: var(--accent);"></div>
-                            <span id="loading-text" style="font-weight: 600; color: var(--text-primary); margin-top: 1rem;">Optimizing Workspace... 0%</span>
+                            <span id="loading-text"
+                                style="font-weight: 600; color: var(--text-primary); margin-top: 1rem;">Optimizing
+                                Workspace... 0%</span>
                         </div>
 
                         <!-- Fallback image hidden by default -->
@@ -297,7 +305,8 @@
                     <button id="btn-model-drift" class="btn-outline">Check for Model Drift</button>
                     <!-- Auth-Aware Elements -->
                     <div id="auth-locked-container" style="display: flex; align-items: center;">
-                        <span style="color: var(--text-secondary); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem;">
+                        <span
+                            style="color: var(--text-secondary); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem;">
                             <i class="ph-fill ph-lock-key" style="color: var(--accent);"></i> Login to Download
                         </span>
                     </div>
@@ -327,16 +336,18 @@
 
                     <!-- Operational Parameters -->
                     <div class="card-section" style="margin-bottom: 1.5rem;">
-                        <h3 class="section-title" style="text-align: center; margin-bottom: 1.2rem; font-size: 1.1rem; color: var(--text-primary);">Operational Parameters</h3>
+                        <h3 class="section-title"
+                            style="text-align: center; margin-bottom: 1.2rem; font-size: 1.1rem; color: var(--text-primary);">
+                            Operational Parameters</h3>
 
                         <!-- Mode Toggle -->
                         <div class="mode-toggle-wrapper">
                             <div class="mode-toggle">
                                 <button id="btn-mode-manual" class="mode-toggle-btn active">
-                                    <i class="ph-bold ph-pencil-simple"></i>Manual
+                                    Manual
                                 </button>
                                 <button id="btn-mode-auto" class="mode-toggle-btn">
-                                    <i class="ph-bold ph-broadcast"></i>Automatic
+                                    Automatic
                                 </button>
                             </div>
                         </div>
@@ -344,34 +355,53 @@
                         <!-- MANUAL INPUT SECTION (default) -->
                         <div id="motor-manual-inputs">
                             <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
-                                <div class="input-field" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
-                                    <label style="flex: 0 0 160px; font-size: 0.75rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Air Temperature (K)</label>
+                                <div class="input-field"
+                                    style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                                    <label
+                                        style="flex: 0 0 160px; font-size: 0.75rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Air
+                                        Temperature (K)</label>
                                     <input type="number" id="motor-air-temp" placeholder="e.g. 300">
                                 </div>
-                                <div class="input-field" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
-                                    <label style="flex: 0 0 160px; font-size: 0.75rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Process Temperature (K)</label>
+                                <div class="input-field"
+                                    style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                                    <label
+                                        style="flex: 0 0 160px; font-size: 0.75rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Process
+                                        Temperature (K)</label>
                                     <input type="number" id="motor-proc-temp" placeholder="e.g. 310">
                                 </div>
-                                <div class="input-field" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
-                                    <label style="flex: 0 0 160px; font-size: 0.75rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Rotational Speed (RPM)</label>
+                                <div class="input-field"
+                                    style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                                    <label
+                                        style="flex: 0 0 160px; font-size: 0.75rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Rotational
+                                        Speed (RPM)</label>
                                     <input type="number" id="motor-rot-speed" placeholder="e.g. 1500">
                                 </div>
-                                <div class="input-field" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
-                                    <label style="flex: 0 0 160px; font-size: 0.75rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Torque (Nm)</label>
+                                <div class="input-field"
+                                    style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                                    <label
+                                        style="flex: 0 0 160px; font-size: 0.75rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Torque
+                                        (Nm)</label>
                                     <input type="number" id="motor-torque" placeholder="e.g. 45">
                                 </div>
-                                <div class="input-field" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
-                                    <label style="flex: 0 0 160px; font-size: 0.75rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Tool Wear (min)</label>
+                                <div class="input-field"
+                                    style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                                    <label
+                                        style="flex: 0 0 160px; font-size: 0.75rem; font-weight: 800; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Tool
+                                        Wear (min)</label>
                                     <input type="number" id="motor-tool-wear" placeholder="e.g. 120">
                                 </div>
                             </div>
-                            <button id="motor-predict-btn" class="btn-pill" style="width: 100%; padding: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em;">Predict Health</button>
+                            <button id="motor-predict-btn" class="btn-pill"
+                                style="width: 100%; padding: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em;">Predict
+                                Health</button>
                         </div>
 
                         <!-- AUTOMATIC SENSOR SECTION (hidden by default) -->
                         <div id="motor-auto-inputs" style="display: none;">
-                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                                <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Live sensor feed — 5 channels active</span>
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                                <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Live
+                                    sensor feed — 5 channels active</span>
                                 <span class="live-badge"><span class="live-dot"></span>LIVE</span>
                             </div>
                             <div class="auto-sensor-section">
@@ -379,7 +409,8 @@
                                 <div class="sensor-waveform-card">
                                     <div class="sensor-waveform-header">
                                         <span class="sensor-waveform-label">Air Temperature</span>
-                                        <span><span class="sensor-waveform-live-val" id="sv-air-temp">300</span><span class="sensor-waveform-unit">K</span></span>
+                                        <span><span class="sensor-waveform-live-val" id="sv-air-temp">300</span><span
+                                                class="sensor-waveform-unit">K</span></span>
                                     </div>
                                     <div class="sensor-canvas-wrap"><canvas id="sc-air-temp"></canvas></div>
                                 </div>
@@ -387,7 +418,8 @@
                                 <div class="sensor-waveform-card">
                                     <div class="sensor-waveform-header">
                                         <span class="sensor-waveform-label">Process Temperature</span>
-                                        <span><span class="sensor-waveform-live-val" id="sv-proc-temp">310</span><span class="sensor-waveform-unit">K</span></span>
+                                        <span><span class="sensor-waveform-live-val" id="sv-proc-temp">310</span><span
+                                                class="sensor-waveform-unit">K</span></span>
                                     </div>
                                     <div class="sensor-canvas-wrap"><canvas id="sc-proc-temp"></canvas></div>
                                 </div>
@@ -395,7 +427,8 @@
                                 <div class="sensor-waveform-card">
                                     <div class="sensor-waveform-header">
                                         <span class="sensor-waveform-label">Rotational Speed</span>
-                                        <span><span class="sensor-waveform-live-val" id="sv-rot-speed">1500</span><span class="sensor-waveform-unit">RPM</span></span>
+                                        <span><span class="sensor-waveform-live-val" id="sv-rot-speed">1500</span><span
+                                                class="sensor-waveform-unit">RPM</span></span>
                                     </div>
                                     <div class="sensor-canvas-wrap"><canvas id="sc-rot-speed"></canvas></div>
                                 </div>
@@ -403,7 +436,8 @@
                                 <div class="sensor-waveform-card">
                                     <div class="sensor-waveform-header">
                                         <span class="sensor-waveform-label">Torque</span>
-                                        <span><span class="sensor-waveform-live-val" id="sv-torque">45</span><span class="sensor-waveform-unit">Nm</span></span>
+                                        <span><span class="sensor-waveform-live-val" id="sv-torque">45</span><span
+                                                class="sensor-waveform-unit">Nm</span></span>
                                     </div>
                                     <div class="sensor-canvas-wrap"><canvas id="sc-torque"></canvas></div>
                                 </div>
@@ -411,7 +445,8 @@
                                 <div class="sensor-waveform-card">
                                     <div class="sensor-waveform-header">
                                         <span class="sensor-waveform-label">Tool Wear</span>
-                                        <span><span class="sensor-waveform-live-val" id="sv-tool-wear">120</span><span class="sensor-waveform-unit">min</span></span>
+                                        <span><span class="sensor-waveform-live-val" id="sv-tool-wear">120</span><span
+                                                class="sensor-waveform-unit">min</span></span>
                                     </div>
                                     <div class="sensor-canvas-wrap"><canvas id="sc-tool-wear"></canvas></div>
                                 </div>
@@ -430,7 +465,8 @@
                                 Prediction Result</h3>
                             <div style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.5rem;">Status:
                                 <span id="motor-status-text"
-                                    style="font-weight: 800; color: var(--text-primary);">--</span></div>
+                                    style="font-weight: 800; color: var(--text-primary);">--</span>
+                            </div>
                             <div style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 1rem;">Health
                                 Score: <span id="motor-health-score"
                                     style="font-weight: 800; color: var(--text-primary);">-- / 100</span></div>
@@ -444,13 +480,21 @@
                             style="text-align: center; margin-bottom: 1rem; font-size: 1.1rem; color: var(--text-primary);">
                             Business Impact Analysis</h3>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
-                            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
-                                <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.5rem;">Estimated Cost of Failure</div>
-                                <div id="motor-cost-failure" style="font-size: 1.5rem; font-weight: 900; color: #1e293b;">₹--</div>
+                            <div
+                                style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
+                                <div
+                                    style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.5rem;">
+                                    Estimated Cost of Failure</div>
+                                <div id="motor-cost-failure"
+                                    style="font-size: 1.5rem; font-weight: 900; color: #1e293b;">₹--</div>
                             </div>
-                            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
-                                <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.5rem;">Predicted Savings</div>
-                                <div id="motor-predicted-savings" style="font-size: 1.5rem; font-weight: 900; color: var(--accent);">₹--</div>
+                            <div
+                                style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
+                                <div
+                                    style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.5rem;">
+                                    Predicted Savings</div>
+                                <div id="motor-predicted-savings"
+                                    style="font-size: 1.5rem; font-weight: 900; color: var(--accent);">₹--</div>
                             </div>
                         </div>
 
@@ -613,24 +657,33 @@
                         <p style="text-align: center; font-size: 0.85rem; color: #64748b; margin-bottom: 1.5rem;">
                             Comparing live 'Torque (Nm)' data against the original training data.</p>
 
-                        <div class="status-badge at-risk" style="padding: 1rem; text-align: center; margin-bottom: 1rem; border: 1px solid #fecaca;">
+                        <div class="status-badge at-risk"
+                            style="padding: 1rem; text-align: center; margin-bottom: 1rem; border: 1px solid #fecaca;">
                             <h4 style="font-weight: 800; margin-bottom: 0.25rem;">ALERT: Data Drift Detected!</h4>
-                            <p style="font-size: 0.85rem; margin: 0;">Model accuracy may be degraded. Retraining is recommended.</p>
+                            <p style="font-size: 0.85rem; margin: 0;">Model accuracy may be degraded. Retraining is
+                                recommended.</p>
                         </div>
                         <div style="position: relative; width: 100%; height: 250px;">
                             <canvas id="opsDriftChart"></canvas>
                         </div>
                         <div style="text-align: center; font-size: 0.8rem; margin-top: 1rem;">
-                            <span style="color: #ef4444; font-weight: 600; margin-right: 1.5rem;">⟷ Live Data (Drifted)</span>
+                            <span style="color: #ef4444; font-weight: 600; margin-right: 1.5rem;">⟷ Live Data
+                                (Drifted)</span>
                             <span style="color: var(--accent); font-weight: 600;">⟷ Training Data</span>
                         </div>
                     </div>
                     <!-- Retraining Logic Box -->
-                    <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius); box-shadow: var(--shadow-soft); padding: 1.5rem;">
-                        <h3 style="text-align: center; font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1rem;">Model Retraining</h3>
-                        <p style="text-align: center; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.5;">
-                            Since data drift has been detected, the model's accuracy may be affected. Initiate a retraining pipeline to update the model with the latest data.</p>
-                        <button class="btn-pill" style="width: 100%; padding: 1rem;">Initiate Retraining for Motor Model</button>
+                    <div
+                        style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius); box-shadow: var(--shadow-soft); padding: 1.5rem;">
+                        <h3
+                            style="text-align: center; font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1rem;">
+                            Model Retraining</h3>
+                        <p
+                            style="text-align: center; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.5;">
+                            Since data drift has been detected, the model's accuracy may be affected. Initiate a
+                            retraining pipeline to update the model with the latest data.</p>
+                        <button class="btn-pill" style="width: 100%; padding: 1rem;">Initiate Retraining for Motor
+                            Model</button>
                     </div>
 
                 </div>
@@ -649,8 +702,11 @@
                     <h2
                         style="font-size: 2.2rem; font-weight: 900; color: #0f172a; font-style: italic; text-transform: uppercase;">
                         Command Center</h2>
-                    <p style="color: var(--accent); font-weight: 700; text-decoration: underline;">Active Maintenance Tickets</p>
-                    <a href="#" class="back-link" style="color: var(--text-secondary); font-weight: 700; text-decoration: none; font-size: 0.9rem; position: absolute; right: 0; bottom: 0;">&laquo; BACK TO FLEET</a>
+                    <p style="color: var(--accent); font-weight: 700; text-decoration: underline;">Active Maintenance
+                        Tickets</p>
+                    <a href="#" class="back-link"
+                        style="color: var(--text-secondary); font-weight: 700; text-decoration: none; font-size: 0.9rem; position: absolute; right: 0; bottom: 0;">&laquo;
+                        BACK TO FLEET</a>
 
                 </div>
                 <!-- Banner -->
@@ -786,7 +842,8 @@
                                 Failure</span> increases by approximately <span style="color: #ef4444;">82%</span>.
                         </div>
                         <div style="font-size: 0.8rem; color: #94a3b8; font-style: italic;">(This pattern is
-                            <strong>2.4x</strong> more likely than random chance.)</div>
+                            <strong>2.4x</strong> more likely than random chance.)
+                        </div>
                     </div>
                     <!-- Rule 2 -->
                     <div
@@ -802,7 +859,8 @@
                                 Anomaly</span> increases by approximately <span style="color: #ef4444;">65%</span>.
                         </div>
                         <div style="font-size: 0.8rem; color: #94a3b8; font-style: italic;">(This pattern is
-                            <strong>1.8x</strong> more likely than random chance.)</div>
+                            <strong>1.8x</strong> more likely than random chance.)
+                        </div>
                     </div>
                 </div>
 
@@ -894,9 +952,13 @@
                                 <span
                                     style="width: 10px; height: 10px; border-radius: 50%; background: #10b981; display: inline-block; flex-shrink: 0;"></span>
 
-                                <strong style="font-size: 0.92rem; color: #059669;">Cluster 0: Standard Operation</strong>
+                                <strong style="font-size: 0.92rem; color: #059669;">Cluster 0: Standard
+                                    Operation</strong>
                             </div>
-                            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.4rem;">These motors are operating within normal torque and speed parameters. Represents a healthy baseline.</p>
+                            <p
+                                style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.4rem;">
+                                These motors are operating within normal torque and speed parameters. Represents a
+                                healthy baseline.</p>
 
                         </div>
 
@@ -908,7 +970,10 @@
 
                                 <strong style="font-size: 0.92rem; color: #94a3b8;">Cluster 1: High Stress</strong>
                             </div>
-                            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.4rem;">This group consistently runs at high torque and/or speed. They are at higher risk of premature wear. Recommend load balancing.</p>
+                            <p
+                                style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.4rem;">
+                                This group consistently runs at high torque and/or speed. They are at higher risk of
+                                premature wear. Recommend load balancing.</p>
 
                         </div>
 
@@ -917,18 +982,22 @@
                             <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
                                 <span
                                     style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; display: inline-block; flex-shrink: 0;"></span>
-                                <strong style="font-size: 0.92rem; color: #ef4444;">Cluster 2: High Wear / Failure Prone</strong>
+                                <strong style="font-size: 0.92rem; color: #ef4444;">Cluster 2: High Wear / Failure
+                                    Prone</strong>
                             </div>
-                            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.4rem;">These motors show significant tool wear relative to their operational stress. This is a strong indicator of imminent failure.</p>
+                            <p
+                                style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.4rem;">
+                                These motors show significant tool wear relative to their operational stress. This is a
+                                strong indicator of imminent failure.</p>
 
                         </div>
                     </div>
                 </div>
 
                 <!-- Explore Assets Button -->
-                <div style="text-align: center; margin-top: 3.5rem;">
+                <!-- <div style="text-align: center; margin-top: 3.5rem;">
                     <button class="btn-pill">EXPLORE ASSETS</button>
-                </div>
+                </div> -->
 
 
             </div>

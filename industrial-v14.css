@@ -8,7 +8,7 @@
     --accent: #f59e0b;
     --accent-gold: #fbbf24;
     --header-height: 80px;
-    --footer-height: 140px;
+    --footer-height: 120px;
     --side-track-width: 80px;
     --radius: 20px;
     --shadow-soft: 0 10px 40px rgba(180, 120, 20, 0.08);
@@ -189,7 +189,7 @@ main.center-area {
 
 .hero-text h1 {
     font-size: 5.5rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 0.95;
     margin-bottom: 1.5rem;
     letter-spacing: -2px;
@@ -345,8 +345,15 @@ main.center-area {
 }
 
 @keyframes staggeredFade {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .animate-in {
@@ -371,9 +378,21 @@ main.center-area {
 }
 
 @keyframes dashZoomIn {
-    0% { transform: scale(0.05); opacity: 0; filter: blur(30px) brightness(2); }
-    15% { opacity: 1; }
-    100% { transform: scale(1); opacity: 1; filter: blur(0) brightness(1); }
+    0% {
+        transform: scale(0.05);
+        opacity: 0;
+        filter: blur(30px) brightness(2);
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        filter: blur(0) brightness(1);
+    }
 }
 
 .speed-zoom-in {
@@ -393,13 +412,20 @@ main.center-area {
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.7; }
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
 }
 
 /* Redesign Utility Classes */
 .btn-pill {
-    background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+    background: #fbbf24;
     color: white;
     font-weight: 700;
     border: none;
@@ -411,12 +437,14 @@ main.center-area {
 }
 
 .btn-pill:hover {
-    background: linear-gradient(135deg, #d97706, var(--accent));
+    background: #d97706;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
 }
 
-
+.pill-login {
+    background-color: #d97706;
+}
 
 
 .btn-outline {
@@ -488,7 +516,7 @@ main.center-area {
     gap: 1.2rem;
     align-items: flex-start;
     transition: all 0.4s ease;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }
 
 .ai-suggestion.hidden {
@@ -656,8 +684,17 @@ main.center-area {
 }
 
 @keyframes livePulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.7); }
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(0.7);
+    }
 }
 
 /* Auto prediction result */
@@ -712,5 +749,3 @@ main.center-area {
     background: linear-gradient(90deg, #f59e0b, #fbbf24);
     transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-
