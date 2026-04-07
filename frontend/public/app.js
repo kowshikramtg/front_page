@@ -187,6 +187,31 @@ function init() {
                 if (barTorque) barTorque.style.height = mockBackendResponse.graphTorquePercent + '%';
                 if (barTool) barTool.style.height = mockBackendResponse.graphToolWearPercent + '%';
 
+                // 4. Save to Prediction History in localStorage
+                try {
+                    const history = JSON.parse(localStorage.getItem('prediction_history') || '[]');
+                    
+                    // Format current date and time (YYYY-MM-DD HH:mm:ss)
+                    const now = new Date();
+                    const formattedDate = now.getFullYear() + '-' +
+                        String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                        String(now.getDate()).padStart(2, '0') + ' ' +
+                        String(now.getHours()).padStart(2, '0') + ':' +
+                        String(now.getMinutes()).padStart(2, '0') + ':' +
+                        String(now.getSeconds()).padStart(2, '0');
+
+                    const newEntry = {
+                        id: 'MOT-007',
+                        model: 'Asset Health Analysis',
+                        analyzedOn: formattedDate,
+                        status: 'SUCCESSFUL'
+                    };
+                    history.push(newEntry);
+                    localStorage.setItem('prediction_history', JSON.stringify(history));
+                } catch (e) {
+                    console.error("Error saving prediction history:", e);
+                }
+
             }, 800);
         });
     }
@@ -272,11 +297,16 @@ function init() {
         });
     }
 
-    // Download PDF 
+    // Download PDF or route to account report page
     const btnDownload = document.getElementById('btn-download');
     if (btnDownload) {
         btnDownload.addEventListener('click', () => {
-            const element = document.getElementById('motor-dashboard');
+            if (!window.location.pathname.startsWith('/account')) {
+                window.location.href = '/account?report=MOT-007';
+                return;
+            }
+
+            const element = document.getElementById('account-report-card') || document.getElementById('motor-dashboard');
             const opt = {
               margin:       0.5,
               filename:     'Motor_MOT-007_Report.pdf',
@@ -1078,6 +1108,146 @@ document.addEventListener('DOMContentLoaded', initModeToggle);
 
 
 
+// ====== NEW: AI Chatbot Logic ======
+function initAiChatbot() {
+    const btnExpertAi = document.getElementById('btn-expert-ai');
+    const aiChatModal = document.getElementById('ai-chat-modal');
+    const btnCloseChat = document.getElementById('btn-close-chat');
+    const chatInput = document.getElementById('chat-input');
+    const btnSendChat = document.getElementById('btn-send-chat');
+    const chatMessages = document.getElementById('chat-messages');
+    const btnUploadPdf = document.getElementById('btn-upload-pdf');
+    const hiddenPdfUpload = document.getElementById('hidden-pdf-upload');
+
+    if (!btnExpertAi || !aiChatModal) return;
+
+    btnExpertAi.addEventListener('click', () => {
+        aiChatModal.style.display = 'flex';
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+
+    btnCloseChat.addEventListener('click', () => {
+        aiChatModal.style.display = 'none';
+    });
+
+    function addMessage(text, isUser = false, isFile = false) {
+        const msgDiv = document.createElement('div');
+        msgDiv.style.maxWidth = '85%';
+        msgDiv.style.padding = '0.8rem';
+        msgDiv.style.borderRadius = '12px';
+        msgDiv.style.boxShadow = '0 2px 4px rgba(0,0,0,0.02)';
+        msgDiv.style.marginBottom = '0.5rem';
+        msgDiv.style.fontSize = '0.85rem';
+        msgDiv.style.lineHeight = '1.5';
+        msgDiv.style.wordBreak = 'break-word';
+
+        if (isUser) {
+            msgDiv.style.alignSelf = 'flex-end';
+            msgDiv.style.background = '#4f46e5';
+            msgDiv.style.color = 'white';
+            msgDiv.style.borderTopRightRadius = '2px';
+            if (isFile) {
+                msgDiv.innerHTML = `<div style="display: flex; align-items: center; gap: 0.5rem;"><i class="ph-bold ph-file-pdf" style="font-size: 1.2rem;"></i> ${text}</div>`;
+            } else {
+                msgDiv.textContent = text;
+            }
+        } else {
+            msgDiv.style.alignSelf = 'flex-start';
+            msgDiv.style.background = 'white';
+            msgDiv.style.color = '#334155';
+            msgDiv.style.border = '1px solid #e2e8f0';
+            msgDiv.style.borderTopLeftRadius = '2px';
+            msgDiv.innerHTML = text;
+        }
+
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return msgDiv;
+    }
+
+    function typeAIResponse(targetDiv, htmlText, speed = 15) {
+        let i = 0;
+        let isTag = false;
+        let cText = '';
+        const interval = setInterval(() => {
+            const char = htmlText[i];
+            cText += char;
+            if (char === '<') isTag = true;
+            if (char === '>') isTag = false;
+
+            if (!isTag) {
+                targetDiv.innerHTML = cText;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            i++;
+            if (i >= htmlText.length) {
+                clearInterval(interval);
+                targetDiv.innerHTML = htmlText;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }, speed);
+    }
+
+    function simulateAiReply(userText, isFile = false) {
+        const typingDiv = document.createElement('div');
+        typingDiv.style.alignSelf = 'flex-start';
+        typingDiv.style.background = '#f1f5f9';
+        typingDiv.style.color = '#64748b';
+        typingDiv.style.padding = '0.6rem 1rem';
+        typingDiv.style.borderRadius = '999px';
+        typingDiv.style.fontSize = '0.8rem';
+        typingDiv.style.marginBottom = '0.5rem';
+        typingDiv.innerHTML = '<i class="ph-bold ph-dots-three"></i> AI is thinking...';
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        setTimeout(() => {
+            chatMessages.removeChild(typingDiv);
+            const replyDiv = addMessage('', false);
+            let responseHtml = '';
+            
+            if (isFile) {
+                responseHtml = `<strong>PDF Analysis Complete:</strong><br><br>I've reviewed the attached document. According to the manual, MOT-007 tool wear typically starts accelerating after 100 hours of continuous operation in high-humidity (>60%) environments. The recommended action is to inspect the bearings and recalibrate the torque sensors.`;
+            } else if (userText.toLowerCase().includes('drift')) {
+                responseHtml = `I've checked the model drift metrics. The latest data indicates a significant deviation in <strong>Torque (Nm)</strong>. Live torque patterns are 12% higher than the baseline training data. I suggest recalibrating the model or checking the motor load physically.`;
+            } else {
+                responseHtml = `Based on historical patterns, 80% of critical failures in MOT-007 are preceded by a similar combination of high tool wear and elevated process temperatures. Would you like me to generate a full diagnostic report?`;
+            }
+            
+            typeAIResponse(replyDiv, responseHtml, 15);
+        }, 1500);
+    }
+
+    btnSendChat.addEventListener('click', () => {
+        const text = chatInput.value.trim();
+        if (text) {
+            addMessage(text, true);
+            chatInput.value = '';
+            simulateAiReply(text);
+        }
+    });
+
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            btnSendChat.click();
+        }
+    });
+
+    btnUploadPdf.addEventListener('click', () => {
+        hiddenPdfUpload.click();
+    });
+
+    hiddenPdfUpload.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const fileName = e.target.files[0].name;
+            addMessage(`Uploaded document: ${fileName}`, true, true);
+            simulateAiReply(fileName, true);
+            e.target.value = '';
+        }
+    });
+}
+
 // Next.js mounting fix
 if (typeof init === 'function') {
     if (document.readyState === 'loading') {
@@ -1094,6 +1264,7 @@ if (typeof init === 'function') {
         console.log('Dashboard: Force Initialization Triggered');
         if (typeof init === 'function') init();
         if (typeof initModeToggle === 'function') initModeToggle();
+        if (typeof initAiChatbot === 'function') initAiChatbot();
     }
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         setTimeout(triggerInit, 800);
